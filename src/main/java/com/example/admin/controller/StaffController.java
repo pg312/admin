@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("staff")
 public class StaffController {
@@ -21,6 +23,11 @@ public class StaffController {
         return new ResponseEntity<>(savedStaff, HttpStatus.OK);
     }
 
+    @GetMapping("getAll")
+    public ResponseEntity<List<Staff>> getAllStaff(){
+        List<Staff> staff = staffService.getAll();
+        return new ResponseEntity<List<Staff>>(staff,HttpStatus.OK);
+    }
 
     @DeleteMapping("delete/{id}")
     public void deleteStaff(@PathVariable Long id){
