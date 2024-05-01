@@ -1,8 +1,9 @@
 package com.example.admin.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
 
@@ -13,29 +14,29 @@ public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
-    @NotNull
+    @NotBlank
     private String firstName;
 
     @Column
     private String middleName;
 
     @Column
-    @NotNull
+    @NotBlank
     private String lastName;
 
     @Column
-    @NotNull
+    @NotBlank
+    @Size(min=10, max=10)
     private String mobileNumber;
 
     @Column
-    @NotNull
+    @NotBlank
     private String emailId;
 
 
     @Column
-    @NotNull
+    @NotBlank
     private String description;
 
     @ManyToMany(cascade = CascadeType.DETACH)
