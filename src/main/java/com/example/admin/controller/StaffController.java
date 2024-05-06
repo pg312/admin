@@ -1,8 +1,9 @@
 package com.example.admin.controller;
 
+import com.example.admin.mapper.StaffDtoService;
 import com.example.admin.model.Staff;
+import com.example.admin.service.RabbitMQProducer;
 import com.example.admin.service.StaffService;
-import com.oracle.svm.core.annotate.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,16 @@ public class StaffController {
     @Autowired
     StaffService staffService;
 
+    @Autowired
+    RabbitMQProducer rabbitMQProducer;
+
+    @Autowired
+    StaffDtoService staffDtoService;
+
     @PostMapping("add")
     public ResponseEntity<Staff> addStaff(@RequestBody Staff staff){
         Staff savedStaff = staffService.add(staff);
+        rabbitMQProducer.sendStaffDetails(staffDtoService.convert(staff));
         return new ResponseEntity<>(savedStaff, HttpStatus.OK);
     }
 
