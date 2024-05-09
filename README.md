@@ -17,6 +17,10 @@ It is a microservice to add hospital staff and assign them wih predefined roles.
   Flyway - For data migrations
   
   Mysql - Database for storing and retriving data
+ 
+  **Microservices communication:**
+  
+  RabbitMQ
 
 **How to Run the application:**
   
