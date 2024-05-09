@@ -22,5 +22,7 @@ It is a microservice to add hospital staff and assign them wih predefined roles.
   
   RabbitMQ
 
+  Spring AQMP
+
 **How to Run the application:**
   
