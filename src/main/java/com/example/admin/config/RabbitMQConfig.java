@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("spring.rabbitmq.exchange")
+    @Value("${spring.rabbitmq.exchange}")
     private String exchange;
 
-    @Value("spring.rabbitmq.routing.key")
+    @Value("${spring.rabbitmq.routing.key}")
     private String routingKey;
-    @Value("spring.rabbitmq.queue.name")
+    @Value("${spring.rabbitmq.queue.name}")
     private String queue;
 
     @Bean
@@ -36,7 +36,14 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
+    public Binding binding(){
+        return BindingBuilder
+                .bind(queue())
+                .to(exchange()).with(routingKey);
+    }
+
+    @Bean
+    public RabbitTemplate amqpTemplate(ConnectionFactory connectionFactory){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(converter());
         return rabbitTemplate;

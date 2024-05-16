@@ -7,7 +7,6 @@ import com.example.admin.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +24,6 @@ public class StaffDtoService {
         return StaffDto.builder()
                 .id(staff.getId())
                 .name(staff.getFirstName()+" "+staff.getMiddleName()+" "+staff.getLastName())
-                .role(roles).build();
+                .roles(roles).build();
     }
 }
