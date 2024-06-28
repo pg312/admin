@@ -1,6 +1,7 @@
 package com.example.admin.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -15,28 +16,29 @@ public class Staff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    @NotBlank
+    @NotBlank(message = "FirstName can't be blank")
     private String firstName;
 
     @Column
     private String middleName;
 
     @Column
-    @NotBlank
+    @NotBlank(message = "LastName can't be blank")
     private String lastName;
 
     @Column
-    @NotBlank
-    @Size(min=10, max=10)
+    @NotBlank(message = "Mobile number can't be null")
+    @Size(min=10, max=10, message = "Mobile number should be 10 characters")
     private String mobileNumber;
 
     @Column
-    @NotBlank
+    @NotBlank(message = "EmailId can't be null")
+    @Email(message = "Invalid email id format")
     private String emailId;
 
 
     @Column
-    @NotBlank
+    @NotBlank(message = "Description can't be null")
     private String description;
 
     @ManyToMany(cascade = CascadeType.DETACH)
