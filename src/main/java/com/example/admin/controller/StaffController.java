@@ -14,8 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("staff")
@@ -43,16 +42,27 @@ public class StaffController {
         return new ResponseEntity<List<Staff>>(staff,HttpStatus.OK);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Staff> getStaff(@PathVariable Long id){
+        Staff staff = staffService.getById(id);
+        return new ResponseEntity<>(staff, HttpStatus.OK);
+    }
     @DeleteMapping("delete/{id}")
     public void deleteStaff(@PathVariable Long id){
         staffService.delete(id);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException e){
         List<String> errors =  e.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList();
         ErrorResponse errorResponse = ErrorResponse.builder().status(HttpStatus.BAD_REQUEST).timeStamp(new Date()).errors(errors).build();
         return new ResponseEntity<>(errorResponse,new HttpHeaders(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<ErrorResponse> handleNotFoundExceptions(NoSuchElementException e){
+        List<String> errors = Collections.singletonList(e.getMessage());
+        ErrorResponse errorResponse = ErrorResponse.builder().status(HttpStatus.NOT_FOUND).timeStamp(new Date()).errors(errors).build();
+        return new ResponseEntity<>(errorResponse,new HttpHeaders(),HttpStatus.NOT_FOUND);
     }
 }

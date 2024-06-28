@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Component
 public class StaffService {
@@ -18,7 +20,11 @@ public class StaffService {
     }
 
     public void delete(Long id) {
-        staffRepository.deleteById(id);
+        Optional<Staff> staff = staffRepository.findById(id);
+        if(staff.isPresent())
+            staffRepository.deleteById(id);
+        else
+            throw new NoSuchElementException("No record found with id "+id);
     }
 
     public List<Staff> getAll() {
@@ -26,5 +32,10 @@ public class StaffService {
         List<Staff> staffList = new ArrayList<>();
         staff.forEach(staffList::add);
         return staffList;
+    }
+
+    public Staff getById(Long id) {
+        Optional<Staff> staff = staffRepository.findById(id);
+        return staff.orElseThrow(() -> new NoSuchElementException("No record found with id "+id));
     }
 }
